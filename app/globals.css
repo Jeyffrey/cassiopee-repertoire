@@ -1,0 +1,22 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --white: rgb(255 255 255);
+  --dark: rgb(14 15 27);
+
+  --body-lg: max(2.25vmax, 2rem);
+  --body: max(1.25vmax, 1rem);
+  --body-sm: max(1vmax, 0.75rem);
+}
+
+body {
+  font-family: system-ui;
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
