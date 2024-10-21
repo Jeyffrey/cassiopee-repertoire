@@ -1,7 +1,7 @@
 import { supabase } from '@/utils/database';
 
 export default async function Home() {
-  const { data: songs } = await supabase.from('Songs').select();
+  const { data: songs } = await supabase.from('Songs').select().order('id', { ascending: true });
 
   return (
     <main className="max-w-screen-xl mx-auto">

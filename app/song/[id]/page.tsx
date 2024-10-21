@@ -12,13 +12,12 @@ export default async function Song({ params }: { params: { id: string } }) {
   const { data: songs } = await supabase.from('Songs').select().eq('id', params.id);
   const currentSong = songs?.[0];
 
-  const { data: recordings } = await supabase.from('Recordings').select().eq('song_id', params.id);
-  const recording = recordings?.[0];
+  const { data: recordings } = await supabase.from('Recordings').select().eq('song_id', params.id).order('id', { ascending: true });
 
   const { data: scores } = await supabase.from('Scores').select().eq('song_id', params.id);
   const score = scores?.[0];
 
-  const { data: videos } = await supabase.from('Videos').select().eq('song_id', params.id);
+  const { data: videos } = await supabase.from('Videos').select().eq('song_id', params.id).order('id', { ascending: true });
 
   return (
     <main className="h-screen flex flex-wrap gap-6 p-4">
@@ -30,17 +29,21 @@ export default async function Song({ params }: { params: { id: string } }) {
             <small className="block font-light">{currentSong.artist}</small>
           </h1>
         </div>
-        {!!recording && (
+        {!!recordings?.length && (
           <article className="p-6 transition-colors duration-500 bg-slate-50/10 border border-slate-50/20 rounded-xl">
-            {recording.title && (
-            <h2 className="mb-4 text-body-sm">
-              🎙️&nbsp;
-                {recording.title}
-            </h2>
-            )}
-            <audio controls src={recording.url} className="w-full">
-              <track kind="captions" />
-            </audio>
+            {recordings.map((recording) => (
+              <div key={recording.title} className="[&:not(:first-child)]:mt-6">
+                {recording.title && (
+                <h2 className="mb-4 text-body-sm">
+                  🎙️&nbsp;
+                  {recording.title}
+                </h2>
+                )}
+                <audio controls src={recording.url} className="w-full">
+                  <track kind="captions" />
+                </audio>
+              </div>
+            ))}
           </article>
         )}
         {!!videos?.length && videos.map((video) => (
